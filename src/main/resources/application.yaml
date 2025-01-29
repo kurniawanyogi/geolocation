@@ -1,0 +1,9 @@
+spring:
+ application:
+  name: geolocation-service
+server:
+  port: 8888
+  servlet:
+    context-path: /geolocation
+file:
+  cities-canada-usa: src/main/resources/static/cities_canada-usa.tsv
