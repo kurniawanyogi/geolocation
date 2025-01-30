@@ -18,7 +18,7 @@ class GeolocationReaderTest {
     @BeforeEach
     void setUp() {
         initMocks(this);
-        geolocationReaderImpl.setFILE_PATH("src/test/resources/static/cities_canada-usa.tsv");
+        geolocationReaderImpl.setFILE_PATH("static/cities_canada-usa.tsv");
     }
 
     @Test

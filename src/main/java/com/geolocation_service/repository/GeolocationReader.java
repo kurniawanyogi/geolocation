@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @Service
@@ -19,12 +18,17 @@ public class GeolocationReader implements GeolocationRepo {
     @Getter
     private final Trie trie = new Trie();
     @Setter
-    @Value("${file.cities-canada-usa:src/main/resources/static/cities_canada-usa.tsv}")
+    @Value("${file.cities-canada-usa:static/cities_canada-usa.tsv}")
     private String FILE_PATH;
 
     @PostConstruct
     public void init() throws IOException {
-        try (FileReader reader = new FileReader(FILE_PATH)) {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(FILE_PATH);
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("File tidak ditemukan di dalam JAR");
+        }
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             Iterable<CSVRecord> csvRecords = CSVFormat.DEFAULT
                     .withDelimiter('\t')
                     .withQuote(null)
