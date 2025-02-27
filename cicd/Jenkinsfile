@@ -5,14 +5,14 @@ pipeline {
             steps {
                 script {
                     echo "Deploying ${JOB_NAME} with ${ENV_VARIABLE}"
-                    ./mvnw clean package
+                    sh "./mvnw clean package"
                 }
             }
         }
         stage('Test') {
             steps {
                 script {
-                    ./mvnw test
+                    sh "./mvnw test"
                 }
             }
         }
