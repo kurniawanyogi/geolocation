@@ -1,0 +1,42 @@
+pipeline {
+    agent {
+        any
+    }
+    stages {
+        stage('Build') {
+                    steps {
+                        script {
+                            echo "deploying ${JOB_NAME} dengan ${ENV_VARIABLE}";
+                            ./mvnw clean
+                        }
+                    }
+        }
+        stage('Test') {
+                    steps {
+                        script {
+                            ./mvnw compile test-compile
+                            ./mvnw test
+                        }
+                    }
+        }
+        stage('Deploy') {
+                    steps {
+                        script {
+                            java -jar target/geolocation-service-1.0.0-RELEASE.jar
+                        }
+                    }
+        }
+        post {
+            success {
+                script {
+                    echo 'success';
+                }
+           }
+           failed {
+                script {
+                    echo 'failed';
+                }
+           }
+        }
+    }
+}
