@@ -4,39 +4,43 @@ pipeline {
     }
     stages {
         stage('Build') {
-                    steps {
-                        script {
-                            echo "deploying ${JOB_NAME} dengan ${ENV_VARIABLE}";
-                            ./mvnw clean
-                        }
-                    }
+            steps {
+                script {
+                    echo "Deploying ${JOB_NAME} with ${ENV_VARIABLE}"
+                    ./mvnw clean package
+                }
+            }
         }
         stage('Test') {
-                    steps {
-                        script {
-                            ./mvnw compile test-compile
-                            ./mvnw test
-                        }
-                    }
+            steps {
+                script {
+                    ./mvnw test
+                }
+            }
         }
         stage('Deploy') {
-                    steps {
-                        script {
-                            java -jar target/geolocation-service-1.0.0-RELEASE.jar
-                        }
+            steps {
+                script {
+                    def jarFile = 'target/geolocation-service-1.0.0-RELEASE.jar'
+                    if (fileExists(jarFile)) {
+                        sh "java -jar ${jarFile}"
+                    } else {
+                        error "JAR file not found, aborting deployment."
                     }
+                }
+            }
         }
-        post {
-            success {
-                script {
-                    echo 'success';
-                }
-           }
-           failed {
-                script {
-                    echo 'failed';
-                }
-           }
+    }
+    post {
+        success {
+            script {
+                echo 'Build and deployment were successful.'
+            }
+        }
+        failure {
+            script {
+                echo 'Build or deployment failed.'
+            }
         }
     }
 }
