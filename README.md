@@ -1,6 +1,6 @@
 # Spring Boot geolocation-service 
 ### Description
-REST API that provides auto-complete suggestions for large cities in USA and Canada
+REST API that implements the TRIE algorithm to provide auto-complete suggestions for large cities in the USA and Canada.
 
 ### Setup Project
 To run this repo, please follow these command:
